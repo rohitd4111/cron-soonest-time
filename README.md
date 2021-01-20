@@ -25,6 +25,16 @@ A simple script written in PHP which takes time as single argument and output th
 ```bash
 php-cgi -f Index.php time=20:31
 ````
+## Note
+```
+This is just a simple script. We can improve code quality and make it better
+```
+
+## License
+```
+OSL
+```
+
 ## Specification
 We have a set of tasks, each running at least daily, which are scheduled using some simple values in a text file. You might recognise this from writing a crontab configuration in the past.
 
@@ -63,14 +73,4 @@ We want to run your code on the command line using an input like
 For example: ​<code> ./application.py 16:10 < config</code>
 
 Where ‘config’ is a file containing various cron style inputs like we described above. Your code must be able to be run in this way.
-```
-
-## Note
-```
-This is just a simple script. We can improve code quality and make it better
-```
-
-## License
-```
-OSL
 ```
