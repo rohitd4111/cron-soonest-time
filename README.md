@@ -28,8 +28,6 @@ php-cgi -f Index.php time=20:31
 
 ## Specification
 ```
-Specification
-
 We have a set of tasks, each running at least daily, which are scheduled using some simple values in a text file.
 You might recognise this from writing a crontab configuration in the past.
 
