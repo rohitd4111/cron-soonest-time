@@ -1,82 +1,113 @@
 <?php
 /*  This script takes time as single argument.
-*   Result will output the soonest time at which each of the commands will fire and whether it is today or tomorrow. 
+*   Result will output the soonest time at which each of the commands will fire and whether it is today or  tomorrow. 
 *   @author Rohit Dhiman rdhiman@aiopsgroup.com
 */
 
-class nextcrontime{
-    //Get Single argument passed
-    function calculate_next_cron(){
-        If(isset($_GET['time']) && !empty($_GET['time'])){
-            //Read config.txt file
-            $read_txt_file = fopen ("config.txt", "r");
-            $splitime = explode(":", $_GET['time']);
-            // Loop Content from config.txt line by line and perform required actions
-            while (!feof ($read_txt_file)) {
-                $line = fgets($read_txt_file, 4096);
-                $list = explode(" ", $line);
+class Nextcrontime{
 
-                // Case 1 - Every Minute //
-                if($list[0] == "*" && $list[1]=="*")
-                {
-                    echo $_GET['time']." ".'Today'." ".$list[2];
-                }
+    public $inputtime;
+    public $splitime;
+    public $today;
+    public $tomorrow;
 
-                // Case 2 - Hourly//
-                if($list[0] != '*' && $list[1]=='*'){
-                    $newtime = $splitime[0].":".$list[0];
-                    if(strtotime($newtime) >=  strtotime($_GET['time'])){
-                        echo $newtime." ".'Today'." ".$list[2];
-                    }else{
-                        $time = date('Y-m-d H:i', strtotime($newtime) + 60*60);
-                        if (date("Y-m-d") > $time) {
-                            echo date("H:i", strtotime($time))." ".'Today'." ".$list[2];
-                        }else{
-                            echo date("H:i", strtotime($time))." ".'Tomorrow'." ".$list[2];
-                        }
-                    }
-                }
+    public function __construct(){
+        $this->inputtime = $_GET['time'];
+        $this->splitime = explode(":", $this->inputtime);
+        $this->today = "Today";
+        $this->tomorrow = "Tomorrow";
+    }
 
-                // Case 3 - Daily//
-                if($list[0] != "*" && $list[1]!="*"){
-                    $createnewtime = $list[1].":".$list[0];
-                    if(strtotime($createnewtime) < strtotime($_GET['time'])){
-                        echo $createnewtime." ".'Tomorrow'." ".$list[2];
-                    }else{
-                        echo $createnewtime." ".'Today'." ".$list[2];
-                    }
-                }
+    public function calculatenextCron(){
 
-                // Case 4 - Sixty Times //
-                if($list[0] == "*" && $list[1]!="*"){
-                    $againcreatenewtime = $list[1].':00';
-                    if(strtotime($againcreatenewtime) >= strtotime($_GET['time'])){
-                        if($_GET['time'][0] == $list[1])
-                        {
-                            echo $_GET['time']." ".'Today'." ".$list[2];
-                        }else{
-                            echo $againcreatenewtime." "."Today"." ".$list[2];
-                        }
-                    }elseif($splitime[0] == $list[1]){
-                        echo $_GET['time']." ".'Today'." ".$list[2];
-                    }
-                    else{
-                        echo $againcreatenewtime." "."Tomorrow"." ".$list[2];
-                    }
-                }
+        $read_txt_file = fopen ("config.txt", "r");
+        while (!feof ($read_txt_file)) {
+            $line = fgets($read_txt_file, 4096);
+            $list = explode(" ", $line);
+            $minute= $list[0];
+            $hour =  $list[1];
+            $timing = $list[2];
 
-            }
-        }else{
-            echo "Please Pass Time in HH:MM format. Example > php-cgi -f Index.php time=16:10.";
-            return;
+            // Case 1 - Every Minute //
+            echo $this->everyMinute($minute,$hour,$timing) ;
+
+            // Case 2 - Hourly//
+            echo $this->everyHour($minute,$hour,$timing) ;
+
+            // Case 3 - Daily//
+            echo $this->everyDay($minute,$hour,$timing) ;
+
+            // Case 4 - Sixty Times //
+            echo $this->everySixtyminute($minute,$hour,$timing) ;
         }
         //Close File Handler
         fclose ($read_txt_file);
     }
+
+    public function everyMinute($minute,$hour,$timing)
+    {
+        if($minute== "*" && $hour=="*")
+        {
+            return $this->inputtime." ".$this->today." ".$timing;
+        }
+    }
+
+    public function everyHour($minute,$hour,$timing)
+    {
+        if($minute != '*' && $hour=='*'){
+            $newtime = $this->splitime[0].":".$minute;
+            if(strtotime($newtime) >=  strtotime($this->inputtime)){
+                return $newtime." ".$this->today." ".$timing;
+            }else{
+                $time = date('Y-m-d H:i', strtotime($newtime) + 60*60);
+                if (date("Y-m-d") > $time) {
+                    return date("H:i", strtotime($time))." ".$this->today." ".$timing;
+                }else{
+                    return date("H:i", strtotime($time))." ".$this->tomorrow." ".$timing;
+                }
+            }
+        }
+    }
+
+    public function everyDay($minute,$hour,$timing)
+    {
+        if($minute != "*" && $hour!="*"){
+            $createnewtime = $hour.":".$minute;
+            if(strtotime($createnewtime) < strtotime($this->inputtime)){
+                return $createnewtime." ".$this->tomorrow." ".$timing;
+            }else{
+                return $createnewtime." ".$this->today." ".$timing;
+            }
+        }
+    }
+
+    public function everySixtyminute($minute,$hour,$timing)
+    {
+        if($minute == "*" && $hour!="*"){
+            $againcreatenewtime = $hour.':00';
+            if(strtotime($againcreatenewtime) >= strtotime($this->inputtime)){
+                if($this->inputtime[0] == $hour)
+                {
+                    return $this->inputtime." ".$this->today." ".$timing;
+                }else{
+                    return $againcreatenewtime." ".$this->today." ".$timing;
+                }
+            }elseif($this->splitime[0] == $hour){
+                return $this->inputtime." ".$this->today." ".$timing;
+            }
+            else{
+                return $againcreatenewtime." ".$this->tomorrow." ".$timing;
+            }
+        }
+    }
 }
 
 //Execute Function
-$execute = new nextcrontime();
-$execute->calculate_next_cron();
-
+If(isset($_GET['time']) && !empty($_GET['time'])){
+    $execute = new Nextcrontime();
+    return $execute->calculatenextCron();
+}else{
+    echo "Please Pass Time in HH:MM format. Example > php-cgi -f Index.php time=16:10.";
+    return;
+}
 ?>
