@@ -26,16 +26,6 @@ A simple script written in PHP which takes time as single argument and output th
 php-cgi -f Index.php time=20:31
 ````
 
-## Note
-```
-This is just a simple script. We can improve code quality and make it better
-````
-
-## License
-```
-OSL
-```
-
 ## Specification
 ```
 Specification
@@ -74,4 +64,15 @@ Where ‘config’ is a file containing various cron style inputs like we descri
 
 Your code must be able to be run in this way.
 
+```
+
+
+## Note
+```
+This is just a simple script. We can improve code quality and make it better
+````
+
+## License
+```
+OSL
 ```
