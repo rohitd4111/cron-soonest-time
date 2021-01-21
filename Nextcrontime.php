@@ -25,20 +25,21 @@ class Nextcrontime{
     * @return string $result
     */
     public function calculatenextCron(){
+        //Read Provided File from input
         $read_txt_file = fopen ($this->filename, "r");
+        $result = '';
         while (!feof ($read_txt_file)) {
             $line = fgets($read_txt_file, 4096);
             $list = explode(" ", $line);
             $minute= $list[0];
             $hour =  $list[1];
             $timing = $list[2];
-            // Case 1 - Every Minute //
-           $result = $this->everyMinute($minute,$hour,$timing).
-           $this->everyHour($minute,$hour,$timing).
-           $this->everyDay($minute,$hour,$timing).
-           $this->everySixtyminute($minute,$hour,$timing);
-           echo $result;
+            $result .= $this->everyMinute($minute,$hour,$timing).
+            $this->everyHour($minute,$hour,$timing).
+            $this->everyDay($minute,$hour,$timing).
+            $this->everySixtyminute($minute,$hour,$timing);
         }
+        return $result;        
         //Close File Handler
         fclose ($read_txt_file);
     }
