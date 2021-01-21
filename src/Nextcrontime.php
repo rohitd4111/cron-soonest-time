@@ -41,7 +41,6 @@ class Nextcrontime{
     */
     public function calculatenextCron(){
         $result = '';
-        
         if(!$this->checkFileExist($this->filename))
         {
             $result = "File Does not Exists! Please enter the correct File name.";
@@ -62,7 +61,6 @@ class Nextcrontime{
             //Close File Handler
             fclose ($read_txt_file);
         }
-        
         return $result;
     }
 
