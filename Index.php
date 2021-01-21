@@ -13,15 +13,15 @@ class Nextcrontime{
 
     public function __construct(){
         global $argv;
-        $this->inputtime = $argv[1];
+        $this->filename = $argv[2].".txt";
+        $this->inputtime= $argv[1];
         $this->splitime = explode(":", $this->inputtime);
-        $this->today = "Today";
+        $this->today    = "Today";
         $this->tomorrow = "Tomorrow";
     }
 
     public function calculatenextCron(){
-
-        $read_txt_file = fopen ("config.txt", "r");
+        $read_txt_file = fopen ($this->filename, "r");
         while (!feof ($read_txt_file)) {
             $line = fgets($read_txt_file, 4096);
             $list = explode(" ", $line);
