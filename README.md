@@ -23,7 +23,7 @@ A simple script written in PHP which takes time as single argument and output th
 ## Usage
 
 ```bash
-php Index.php 20:31 config
+php-cgi -f application.php time=20:31
 ````
 
 ## License
