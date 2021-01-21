@@ -7,9 +7,24 @@ namespace AIopsGroup\CronTime;
 
 class Nextcrontime{
 
+    /**
+    * @var string $inputtime
+    */
     public $inputtime;
+
+    /**
+    * @var array $splitime
+    */
     public $splitime;
+
+    /**
+    * @var string $today
+    */
     public $today;
+
+    /**
+    * @var string $tomorrow
+    */
     public $tomorrow;
 
     public function __construct(){
@@ -39,7 +54,7 @@ class Nextcrontime{
             $this->everyDay($minute,$hour,$timing).
             $this->everySixtyminute($minute,$hour,$timing);
         }
-        return $result;        
+        return $result;
         //Close File Handler
         fclose ($read_txt_file);
     }
