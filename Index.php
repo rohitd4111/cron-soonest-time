@@ -12,7 +12,8 @@ class Nextcrontime{
     public $tomorrow;
 
     public function __construct(){
-        $this->inputtime = $_GET['time'];
+        global $argv;
+        $this->inputtime = $argv[1];
         $this->splitime = explode(":", $this->inputtime);
         $this->today = "Today";
         $this->tomorrow = "Tomorrow";
@@ -103,7 +104,7 @@ class Nextcrontime{
 }
 
 //Execute Function
-If(isset($_GET['time']) && !empty($_GET['time'])){
+If(isset($argv) && !empty($argv[1])){
     $execute = new Nextcrontime();
     return $execute->calculatenextCron();
 }else{
