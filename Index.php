@@ -104,11 +104,11 @@ class Nextcrontime{
 }
 
 //Execute Function
-If(isset($argv) && !empty($argv[1])){
+If(isset($argv) && !empty($argv[1]) && !empty($argv[2] )){
     $execute = new Nextcrontime();
     return $execute->calculatenextCron();
 }else{
-    echo "Please Pass Time in HH:MM format. Example > php-cgi -f Index.php time=16:10.";
+    echo "Invalid Format. Example - php Index.php 16:10 FILENAME";
     return;
 }
 ?>
