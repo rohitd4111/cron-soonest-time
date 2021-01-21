@@ -40,23 +40,30 @@ class Nextcrontime{
     * @return string $result
     */
     public function calculatenextCron(){
-        //Read Provided File from input
-        $read_txt_file = fopen ($this->filename, "r");
         $result = '';
-        while (!feof ($read_txt_file)) {
-            $line = fgets($read_txt_file, 4096);
-            $list = explode(" ", $line);
-            $minute= $list[0];
-            $hour =  $list[1];
-            $timing = $list[2];
-            $result .= $this->everyMinute($minute,$hour,$timing).
-            $this->everyHour($minute,$hour,$timing).
-            $this->everyDay($minute,$hour,$timing).
-            $this->everySixtyMinute($minute,$hour,$timing);
+        
+        if(!$this->checkFileExist($this->filename))
+        {
+            $result = "File Does not Exists! Please enter the correct File name.";
+        }else{
+            //Read Provided File from input
+            $read_txt_file = fopen ($this->filename, "r");
+            while (!feof ($read_txt_file)) {
+                $line = fgets($read_txt_file, 4096);
+                $list = explode(" ", $line);
+                $minute= $list[0];
+                $hour =  $list[1];
+                $timing = $list[2];
+                $result .= $this->everyMinute($minute,$hour,$timing).
+                $this->everyHour($minute,$hour,$timing).
+                $this->everyDay($minute,$hour,$timing).
+                $this->everySixtyMinute($minute,$hour,$timing);
+            }
+            //Close File Handler
+            fclose ($read_txt_file);
         }
+        
         return $result;
-        //Close File Handler
-        fclose ($read_txt_file);
     }
 
     /**
@@ -133,6 +140,19 @@ class Nextcrontime{
             else{
                 return $againcreatenewtime." ".$this->tomorrow." ".$timing;
             }
+        }
+    }
+
+    /**
+    * @param string $filename
+    * @return bool
+    */
+    public function checkFileExist($filename)
+    {
+        if (file_exists($filename)) {
+            return true;
+        } else {
+            return false;
         }
     }
 }
