@@ -46,6 +46,11 @@ class Nextcrontime{
         fclose ($read_txt_file);
     }
 
+    /**
+    * @param int $minute
+    * @param int $hour
+    * @param string $timing
+    */
     public function everyMinute($minute,$hour,$timing)
     {
         if($minute== "*" && $hour=="*")
@@ -54,6 +59,11 @@ class Nextcrontime{
         }
     }
 
+    /**
+    * @param int $minute
+    * @param int $hour
+    * @param string $timing
+    */
     public function everyHour($minute,$hour,$timing)
     {
         if($minute != '*' && $hour=='*'){
@@ -71,6 +81,11 @@ class Nextcrontime{
         }
     }
 
+    /**
+    * @param int $minute
+    * @param int $hour
+    * @param string $timing
+    */
     public function everyDay($minute,$hour,$timing)
     {
         if($minute != "*" && $hour!="*"){
@@ -83,6 +98,11 @@ class Nextcrontime{
         }
     }
 
+    /**
+    * @param int $minute
+    * @param int $hour
+    * @param string $timing
+    */
     public function everySixtyminute($minute,$hour,$timing)
     {
         if($minute == "*" && $hour!="*"){
