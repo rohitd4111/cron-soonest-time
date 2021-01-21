@@ -25,10 +25,6 @@ A simple script written in PHP which takes time as single argument and output th
 ```bash
 php-cgi -f application.php time=20:31
 ````
-## Note
-```
-This is just a simple script. We can improve code quality and make it better
-```
 
 ## License
 ```
