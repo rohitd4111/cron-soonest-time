@@ -52,7 +52,7 @@ class Nextcrontime{
             $result .= $this->everyMinute($minute,$hour,$timing).
             $this->everyHour($minute,$hour,$timing).
             $this->everyDay($minute,$hour,$timing).
-            $this->everySixtyminute($minute,$hour,$timing);
+            $this->everySixtyMinute($minute,$hour,$timing);
         }
         return $result;
         //Close File Handler
@@ -116,7 +116,7 @@ class Nextcrontime{
     * @param int $hour
     * @param string $timing
     */
-    public function everySixtyminute($minute,$hour,$timing)
+    public function everySixtyMinute($minute,$hour,$timing)
     {
         if($minute == "*" && $hour!="*"){
             $againcreatenewtime = $hour.':00';
