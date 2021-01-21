@@ -33,7 +33,11 @@ class Nextcrontime{
             $hour =  $list[1];
             $timing = $list[2];
             // Case 1 - Every Minute //
-           echo $result = $this->everyMinute($minute,$hour,$timing).$this->everyHour($minute,$hour,$timing).$this->everyDay($minute,$hour,$timing).$this->everySixtyminute($minute,$hour,$timing) ;
+           $result = $this->everyMinute($minute,$hour,$timing).
+           $this->everyHour($minute,$hour,$timing).
+           $this->everyDay($minute,$hour,$timing).
+           $this->everySixtyminute($minute,$hour,$timing);
+           echo $result;
         }
         //Close File Handler
         fclose ($read_txt_file);
