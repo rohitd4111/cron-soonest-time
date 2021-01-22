@@ -5,7 +5,8 @@
 
 namespace AIopsGroup\CronTime;
 
-class Nextcrontime{
+class Nextcrontime
+{
 
     /**
     * @var string $inputtime
@@ -27,10 +28,11 @@ class Nextcrontime{
     */
     public $tomorrow;
 
-    public function __construct(){
+    public function __construct()
+    {
         global $argv;
-        $this->filename = $argv[2].".txt";
-        $this->inputtime= $argv[1];
+        $this->filename = $argv[2] . ".txt";
+        $this->inputtime = $argv[1];
         $this->splitime = explode(":", $this->inputtime);
         $this->today    = "Today";
         $this->tomorrow = "Tomorrow";
@@ -39,27 +41,27 @@ class Nextcrontime{
     /**
     * @return string $result
     */
-    public function calculatenextCron(){
+    public function calculatenextCron()
+    {
         $result = '';
-        if(!$this->checkFileExist($this->filename))
-        {
+        if (!$this->checkFileExist($this->filename)) {
             $result = "File Does not Exists! Please enter the correct File name.";
-        }else{
+        } else {
             //Read Provided File from input
-            $read_txt_file = fopen ($this->filename, "r");
-            while (!feof ($read_txt_file)) {
+            $read_txt_file = fopen($this->filename, "r");
+            while (!feof($read_txt_file)) {
                 $line = fgets($read_txt_file, 4096);
                 $list = explode(" ", $line);
-                $minute= $list[0];
+                $minute = $list[0];
                 $hour =  $list[1];
                 $timing = $list[2];
-                $result .= $this->everyMinute($minute,$hour,$timing).
-                $this->everyHour($minute,$hour,$timing).
-                $this->everyDay($minute,$hour,$timing).
-                $this->everySixtyMinute($minute,$hour,$timing);
+                $result .= $this->everyMinute($minute, $hour, $timing) .
+                $this->everyHour($minute, $hour, $timing) .
+                $this->everyDay($minute, $hour, $timing) .
+                $this->everySixtyMinute($minute, $hour, $timing);
             }
             //Close File Handler
-            fclose ($read_txt_file);
+            fclose($read_txt_file);
         }
         return $result;
     }
@@ -69,11 +71,10 @@ class Nextcrontime{
     * @param int $hour
     * @param string $timing
     */
-    public function everyMinute($minute,$hour,$timing)
+    public function everyMinute($minute, $hour, $timing)
     {
-        if($minute== "*" && $hour=="*")
-        {
-            return $this->inputtime." ".$this->today." ".$timing;
+        if ($minute == "*" && $hour == "*") {
+            return $this->inputtime . " " . $this->today . " " . $timing;
         }
     }
 
@@ -82,18 +83,18 @@ class Nextcrontime{
     * @param int $hour
     * @param string $timing
     */
-    public function everyHour($minute,$hour,$timing)
+    public function everyHour($minute, $hour, $timing)
     {
-        if($minute != '*' && $hour=='*'){
-            $newtime = $this->splitime[0].":".$minute;
-            if(strtotime($newtime) >=  strtotime($this->inputtime)){
-                return $newtime." ".$this->today." ".$timing;
-            }else{
-                $time = date('Y-m-d H:i', strtotime($newtime) + 60*60);
+        if ($minute != '*' && $hour == '*') {
+            $newtime = $this->splitime[0] . ":" . $minute;
+            if (strtotime($newtime) >=  strtotime($this->inputtime)) {
+                return $newtime . " " . $this->today . " " . $timing;
+            } else {
+                $time = date('Y-m-d H:i', strtotime($newtime) + 60 * 60);
                 if (date("Y-m-d") > $time) {
-                    return date("H:i", strtotime($time))." ".$this->today." ".$timing;
-                }else{
-                    return date("H:i", strtotime($time))." ".$this->tomorrow." ".$timing;
+                    return date("H:i", strtotime($time)) . " " . $this->today . " " . $timing;
+                } else {
+                    return date("H:i", strtotime($time)) . " " . $this->tomorrow . " " . $timing;
                 }
             }
         }
@@ -104,14 +105,14 @@ class Nextcrontime{
     * @param int $hour
     * @param string $timing
     */
-    public function everyDay($minute,$hour,$timing)
+    public function everyDay($minute, $hour, $timing)
     {
-        if($minute != "*" && $hour!="*"){
-            $createnewtime = $hour.":".$minute;
-            if(strtotime($createnewtime) < strtotime($this->inputtime)){
-                return $createnewtime." ".$this->tomorrow." ".$timing;
-            }else{
-                return $createnewtime." ".$this->today." ".$timing;
+        if ($minute != "*" && $hour != "*") {
+            $createnewtime = $hour . ":" . $minute;
+            if (strtotime($createnewtime) < strtotime($this->inputtime)) {
+                return $createnewtime . " " . $this->tomorrow . " " . $timing;
+            } else {
+                return $createnewtime . " " . $this->today . " " . $timing;
             }
         }
     }
@@ -121,22 +122,20 @@ class Nextcrontime{
     * @param int $hour
     * @param string $timing
     */
-    public function everySixtyMinute($minute,$hour,$timing)
+    public function everySixtyMinute($minute, $hour, $timing)
     {
-        if($minute == "*" && $hour!="*"){
-            $againcreatenewtime = $hour.':00';
-            if(strtotime($againcreatenewtime) >= strtotime($this->inputtime)){
-                if($this->inputtime[0] == $hour)
-                {
-                    return $this->inputtime." ".$this->today." ".$timing;
-                }else{
-                    return $againcreatenewtime." ".$this->today." ".$timing;
+        if ($minute == "*" && $hour != "*") {
+            $againcreatenewtime = $hour . ':00';
+            if (strtotime($againcreatenewtime) >= strtotime($this->inputtime)) {
+                if ($this->inputtime[0] == $hour) {
+                    return $this->inputtime . " " . $this->today . " " . $timing;
+                } else {
+                    return $againcreatenewtime . " " . $this->today . " " . $timing;
                 }
-            }elseif($this->splitime[0] == $hour){
-                return $this->inputtime." ".$this->today." ".$timing;
-            }
-            else{
-                return $againcreatenewtime." ".$this->tomorrow." ".$timing;
+            } elseif ($this->splitime[0] == $hour) {
+                return $this->inputtime . " " . $this->today . " " . $timing;
+            } else {
+                return $againcreatenewtime . " " . $this->tomorrow . " " . $timing;
             }
         }
     }
@@ -154,5 +153,3 @@ class Nextcrontime{
         }
     }
 }
-
-?>
