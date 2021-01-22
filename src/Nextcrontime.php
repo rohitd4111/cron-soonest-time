@@ -31,7 +31,6 @@ class Nextcrontime
     public function __construct()
     {
         global $argv;
-        $this->filename = $argv[2] . ".txt";
         $this->inputtime = $argv[1];
         $this->splitime = explode(":", $this->inputtime);
         $this->today    = "Today";
@@ -41,28 +40,24 @@ class Nextcrontime
     /**
     * @return string $result
     */
-    public function calculatenextCron()
+    public function calculatenextCron($configFile)
     {
         $result = '';
-        if (!$this->checkFileExist($this->filename)) {
-            $result = "File Does not Exists! Please enter the correct File name.";
-        } else {
-            //Read Provided File from input
-            $read_txt_file = fopen($this->filename, "r");
-            while (!feof($read_txt_file)) {
-                $line = fgets($read_txt_file, 4096);
-                $list = explode(" ", $line);
-                $minute = $list[0];
-                $hour =  $list[1];
-                $timing = $list[2];
-                $result .= $this->everyMinute($minute, $hour, $timing) .
-                $this->everyHour($minute, $hour, $timing) .
-                $this->everyDay($minute, $hour, $timing) .
-                $this->everySixtyMinute($minute, $hour, $timing);
-            }
-            //Close File Handler
-            fclose($read_txt_file);
+        //Read Provided File from input
+        $read_txt_file = fopen($configFile, "r");
+        while (!feof($read_txt_file)) {
+            $line = fgets($read_txt_file, 4096);
+            $list = explode(" ", $line);
+            $minute = $list[0];
+            $hour =  $list[1];
+            $timing = $list[2];
+            $result .= $this->everyMinute($minute, $hour, $timing) .
+            $this->everyHour($minute, $hour, $timing) .
+            $this->everyDay($minute, $hour, $timing) .
+            $this->everySixtyMinute($minute, $hour, $timing);
         }
+        //Close File Handler
+        fclose($read_txt_file);
         return $result;
     }
 
