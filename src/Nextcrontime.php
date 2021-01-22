@@ -134,17 +134,4 @@ class Nextcrontime
             }
         }
     }
-
-    /**
-    * @param string $filename
-    * @return bool
-    */
-    public function checkFileExist($filename)
-    {
-        if (file_exists($filename)) {
-            return true;
-        } else {
-            return false;
-        }
-    }
 }

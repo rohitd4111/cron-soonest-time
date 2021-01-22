@@ -12,3 +12,4 @@ if (isset($argv) && !empty($argv[1])) {
     echo "Invalid Format. Example - php Index.php 16:10 FILENAME";
     return;
 }
+
