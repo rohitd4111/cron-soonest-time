@@ -28,9 +28,8 @@ class Nextcrontime
     */
     public $tomorrow;
 
-    public function __construct()
+    public function __construct($argv)
     {
-        global $argv;
         $this->inputtime = $argv[1];
         $this->splitime = explode(":", $this->inputtime);
         $this->today    = "Today";

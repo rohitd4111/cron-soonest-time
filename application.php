@@ -6,7 +6,7 @@
 require 'src/Nextcrontime.php';
 use AIopsGroup\CronTime\Nextcrontime as CalculateTimeClass;
 if (isset($argv) && !empty($argv[1])) {
-    $execute = new CalculateTimeClass();
+    $execute = new CalculateTimeClass($argv);
     echo $execute->calculatenextCron('php://stdin');
 } else {
     echo "Invalid Format. Example - php Index.php 16:10 FILENAME";
